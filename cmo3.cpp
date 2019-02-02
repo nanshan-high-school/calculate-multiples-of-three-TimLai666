@@ -1,74 +1,78 @@
 #include <iostream>
 #include <math.h>
 using namespace std;
+void doing1(string); // 計算長度
+void doing2(string, int, int); // 製造數字
+void doing3(int, int); // 相乘
+void doing4(int); // 檢查是否為三的倍數
+
 int main() {
-  string math = "12*34";
-  int x = 0;  /* 計數1 */
-  int y = 0;  /* 計數2 */
-  int a = 0;
-  int b = 0;
-  int c = 0; /* 計數３ */
-  int d = 0;
-  int e = 0; /* 計數４ */
-  int num1 = 0;
-  int num2 = 0;
-  int ans = 0;
+    string math;
+    cout << "輸入乘法算式, ex:12*34:\n";
+    cin >> math;
+    doing1(math);
+}
 
-  /* 計算長度 */
-  for(int i = 0; math[i] != '*'; i++) {
-    x++;
-  }
-  for(int i = x + 2/* 略過運算符號 */;math[i] != '\0'; i++) {
-    y++;
-  }
-  d = x + 1;
-  string num;
 
-  /* 轉換成數字 */
-  for(int i = 0; math[i] != '*'; i++) {
-    num[i] = math[i] - '0';
-  }
-  for(int i = d/* 略過運算符號 */; math[i] != '\0'; i++) {
-    num[i] = math[i] - '0';
-  }
-  
-  a = pow(10, x - 1);
-  b = pow(10, y - 1);
-
-  for(int i = 0; i < x; i++) {
-    num[i] *= a;
-    a /= 10;
-    c++;
-  }
-  for(int i = 0; i < y; i++) {
-    num[d + i] *= b;
-    b /= 10;
-    e++;
-  }
-
-  
-
-  if(x / 2 * 2 == x) {
-    for(int i = 0; i < c; i ++) {
-      num1 += num[i] + num[i + 1];
+void doing1(string math) {
+    int length1 = 0, length2 = 0;
+    for(int i = 0; math[i] != '*'; i++) {
+        length1++;
     }
-  }else {
-    for(int i = 1; i < c; i += 2) {
-      num1 += num[i] + num[i + 1];
+    for(int i = length1 + 1; math[i] != '\0'; i++) {
+        length2++;
     }
-    num1 += num[0];
-  }
-  if(y / 2 * 2 == y) {
-    for(int i = d; i < e; i ++) {
-      num2 += num[i] + num[i + 1];
+
+    doing2(math, length1, length2);
+}
+
+
+void doing2(string math, int l1, int l2) {
+    int making1 = l1 - 1, making2 = l2 - 1, tenpow1 = 0, tenpow2 = 0;
+    for(int i = 0; i < l1; i++) {
+        math[i] -= '0';
     }
-  }else {
-    for(int i = d + 1; i < e; i += 2) {
-      num2 += num[i] + num[i + 1];
+    for(int i = l1 + 1; i < l1 + l2 + 1; i++) {
+        math[i] -= '0';
     }
-    num2 += num[d];
-  }
-  ans = num1 * num2;
-  cout<<num1<<'\n';
-  cout<<ans;
+
+    tenpow1 = pow(10, making1);
+    tenpow2 = pow(10, making2);
+    for(int i = 0; i < l1; i++) {
+        math[i] *= tenpow1;
+        tenpow1 /= 10;
+    }
+    for(int i = l1 + 1; i < l1 + l2 + 1; i++) {
+        math[i] *= tenpow2;
+        tenpow2 /= 10;
+    }
+
+
+    int firstnum = 0, secondnum = 0;
+    for(int i = 0; i < l1; i++) {
+        firstnum += math[i];
+    }
+    for(int i = l1 + 1; i < l1 + l2 + 1; i++) {
+        secondnum += math[i];
+    }
+
+    doing3(firstnum, secondnum);
+}
+
+
+void doing3(int first, int second) {
+    int total = first * second;
+
+    doing4(total);
+}
+
+
+void doing4(int total) {
+    string output;
+    if(total / 3 * 3 == total) {
+        output = "是三的倍數";
+    }else {
+        output = "不是三的倍數";
+    }
+    cout << '\n' << total << ' ' << output << '\n';
 }
